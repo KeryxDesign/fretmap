@@ -1,5 +1,5 @@
 --- sync/_design-al-2026-09-10.html	2026-09-10 07:23:20
-+++ index.html	2026-09-10 07:27:37
++++ index.html	2026-09-10 08:07:46
 @@ -3,6 +3,13 @@
  <head>
  <meta charset="utf-8">
@@ -14,6 +14,57 @@
  <script src="./support.js"></script>
  </head>
  <body>
+@@ -75,9 +82,9 @@
+ 
+       <sc-if value="{{ inGioco }}">
+       <div data-screen-label="Gioco" style="position:absolute;inset:0;display:flex;flex-direction:column;background:hsl(204 96% 8%);color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+-        <div style="box-sizing:border-box;flex:none;display:flex;flex-direction:column;gap:7px;padding:11px 30px 9px;border-bottom:1px solid hsl(40 30% 90% / .1)">
++        <div style="box-sizing:border-box;flex:none;display:flex;flex-direction:column;gap:6px;padding:8px 30px 7px;border-bottom:1px solid hsl(40 30% 90% / .1)">
+           <div style="display:flex;align-items:center;gap:11px">
+-            <button type="button" onClick="{{ esci }}" aria-label="{{ tChiudi }}" style="width:28px;height:28px;flex:none;border-radius:9px;border:1px solid hsl(40 30% 90% / .2);background:transparent;color:hsl(40 30% 90%);font-size:14px;line-height:1;cursor:pointer;font-family:inherit">←</button>
++            <button type="button" onClick="{{ esci }}" aria-label="{{ tChiudi }}" style="width:46px;height:46px;margin:-7px;flex:none;padding:0;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit"><span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;border:1px solid hsl(40 30% 90% / .2);color:hsl(40 30% 90%);font-size:16px;line-height:1">←</span></button>
+             <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:{{ coloreFase }}">{{ tEtichetta }}</div>
+             <div style="flex:1"></div>
+             <div style="display:flex;gap:4px;width:150px;flex:none">
+@@ -89,7 +96,7 @@
+             <div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:42px;text-align:right;color:{{ coloreTimer }}">{{ etTimer }}</div>
+           </div>
+           <div style="display:flex;align-items:baseline;gap:12px">
+-            <div style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:23px;line-height:1.2;letter-spacing:-.01em;white-space:nowrap">{{ domanda }}</div>
++            <div style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:21px;line-height:1.2;letter-spacing:-.01em;white-space:nowrap">{{ domanda }}</div>
+             <div style="flex:1;min-width:0;font-size:12px;line-height:1.35;color:{{ coloreSotto }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sottoDomanda }}</div>
+           </div>
+         </div>
+@@ -97,9 +104,9 @@
+         <sc-if value="{{ mostraManico }}" hint-placeholder-val="{{ true }}">
+         <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:0 16px">
+           <div style="{{ stileManico }}">
+-            <div style="position:absolute;left:{{ manicoX }}px;right:0;top:8px;bottom:24px;border-radius:6px;background:linear-gradient(180deg,hsl(24 32% 12%),hsl(24 36% 8%));box-shadow:inset 0 2px 6px rgba(0,0,0,.5)"></div>
++            <div style="position:absolute;left:{{ manicoX }}px;right:0;top:2px;bottom:15px;border-radius:6px;background:linear-gradient(180deg,hsl(24 32% 12%),hsl(24 36% 8%));box-shadow:inset 0 2px 6px rgba(0,0,0,.5)"></div>
+             <sc-for list="{{ tasti }}" as="t" hint-placeholder-count="14">
+-              <div style="position:absolute;left:{{ t.x }}px;top:8px;bottom:24px;width:{{ t.w }}px;background:{{ t.colore }};border-radius:1px"></div>
++              <div style="position:absolute;left:{{ t.x }}px;top:2px;bottom:15px;width:{{ t.w }}px;background:{{ t.colore }};border-radius:1px"></div>
+             </sc-for>
+             <sc-for list="{{ segni }}" as="m" hint-placeholder-count="5">
+               <div style="position:absolute;left:{{ m.x }}px;top:{{ m.y }}px;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:hsl(42 87% 55% / .45)"></div>
+@@ -111,7 +118,7 @@
+               <div style="position:absolute;left:0;top:{{ e.y }}px;transform:translateY(-50%);width:24px;text-align:right;font-size:11px;font-weight:800;color:{{ e.colore }}">{{ e.t }}</div>
+             </sc-for>
+             <sc-for list="{{ celle }}" as="k" hint-placeholder-count="78">
+-              <button type="button" onClick="{{ k.onTap }}" aria-label="{{ k.aria }}" style="position:absolute;left:{{ k.x }}px;top:{{ k.y }}px;transform:translate(-50%,-50%);width:{{ k.w }}px;height:30px;border-radius:15px;border:{{ k.bordo }};background:{{ k.sfondo }};color:{{ k.testoColore }};font-family:inherit;font-weight:800;font-size:11px;letter-spacing:.02em;cursor:{{ k.cursore }};padding:0;box-shadow:{{ k.ombra }};pointer-events:{{ k.eventi }}">{{ k.et }}</button>
++              <button type="button" onClick="{{ k.onTap }}" aria-label="{{ k.aria }}" style="position:absolute;left:{{ k.x }}px;top:{{ k.y }}px;transform:translate(-50%,-50%);width:{{ k.wt }}px;height:40px;border:none;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:{{ k.cursore }};pointer-events:{{ k.eventi }}"><span style="box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:{{ k.w }}px;height:38px;border-radius:13px;border:{{ k.bordo }};background:{{ k.sfondo }};color:{{ k.testoColore }};font-family:inherit;font-weight:800;font-size:12px;letter-spacing:.02em;box-shadow:{{ k.ombra }}">{{ k.et }}</span></button>
+             </sc-for>
+             <sc-for list="{{ onde }}" as="o" hint-placeholder-count="0">
+               <div style="position:absolute;left:{{ o.x }}px;top:{{ o.y }}px;width:64px;height:34px;border-radius:17px;border:2px solid {{ o.colore }};animation:sltPulse .6s ease-out forwards;pointer-events:none"></div>
+@@ -133,7 +140,7 @@
+         </div>
+         </sc-if>
+ 
+-        <div style="box-sizing:border-box;flex:none;padding:0 30px 12px">
++        <div style="box-sizing:border-box;flex:none;padding:0 30px 10px">
+           <sc-if value="{{ mostraTastierino }}" hint-placeholder-val="{{ true }}">
+           <div style="display:flex;gap:5px">
+             <sc-for list="{{ tastierino }}" as="k" hint-placeholder-count="13">
 @@ -587,10 +594,35 @@
      const corde = {}; bersagli.forEach(k=>{ corde[+k.split('-')[0]] = 1; });
      const coppie = Object.keys(corde).map(Number).filter(s=>s !== a).map(s=>[a, s]);
@@ -34,15 +85,15 @@
 +        if(esci && document.fullscreenElement){ const r = esci.call(document); if(r && r.catch) r.catch(()=>{}); }
 +      }
 +    }catch(e){}
-+  }
-+
+   }
+ 
 +  sbloccaAudio(){
 +    try{
 +      if(!this.ac) this.ac = new (window.AudioContext||window.webkitAudioContext)();
 +      if(this.ac.state === 'suspended') this.ac.resume();
 +    }catch(e){}
-   }
- 
++  }
++
    nuovoGiro = () => {
      this.pulisci();
 +    this.schermoIntero(true);
@@ -50,7 +101,72 @@
      const carte = [];
      for(let i=0;i<this.nCarte;i++) carte.push(this.creaCarta());
      this.setState({schermo:'gioco', carte, indice:0, giuste:0, puntiGiro:0, tempiGiro:[], onde:[], errore:null, rivela:false, sel:[], fase:'chiede', deltaGiro:{}}, ()=>this.apri(0));
-@@ -949,7 +981,7 @@
+@@ -732,7 +764,7 @@
+     const carta = st.carte[st.indice];
+     const modo = carta ? carta.modo : 'distanza';
+     const risolto = st.fase === 'ok' || st.fase === 'no';
+-    const PADL = 30, TOP = 6, SP = 33, ALTM = 232;
++    const PADL = 30, TOP = 21, SP = 40, ALTM = 255;
+     // la finestra visibile segue quella degli esercizi: un manico da 13 tasti per una
+     // domanda che ne usa 5 costringe a cercare, e non è quello che si sta allenando
+     const larg = carta ? this.maxLarghezza(modo) : 13;
+@@ -753,7 +785,7 @@
+     const larghManico = XT + CELLW * NTAST;
+     const corde = [], etichette = [], tasti = [], numeri = [], segni = [], celle = [];
+     for(let i=0;i<6;i++){
+-      const y = TOP + 22 + (5-i)*SP;
++      const y = TOP + (5-i)*SP;
+       const attiva = carta && (i === carta.a || i === carta.b);
+       corde.push({y, h: 1 + (5-i)*.3, colore: 'hsl(40 30% 90% / ' + (0.5 + (5-i)*0.06) + ')'});
+       etichette.push({y, t: CORDE[i], colore: attiva ? 'hsl(40 30% 94%)' : 'hsl(40 30% 90% / .4)'});
+@@ -764,12 +796,12 @@
+       const marker = [3,5,7,9,12].indexOf(f) >= 0;
+       const x = xDi(f);
+       numeri.push({x, t: (vuote && f === 0) ? '○' : String(f), colore: marker ? ORO : 'hsl(40 30% 90% / .5)'});
+-      if(marker) segni.push({x, y: TOP + 22 + 5*SP + 20});
++      if(marker) segni.push({x, y: TOP + 2.5*SP});
+     }
+     if(carta && (modo !== 'orecchio' || risolto)){
+       for(let s=0;s<6;s++) for(let f=da;f<=fine;f++){
+         const id = s + '-' + f;
+-        const x = xDi(f), y = TOP + 22 + (5-s)*SP;
++        const x = xDi(f), y = TOP + (5-s)*SP;
+         let sfondo = 'transparent', bordo = '1px solid transparent', testoColore = 'transparent', ombra = 'none', et = '', tap = null;
+         if(modo === 'stessa'){
+           const dato = s === carta.a && f === carta.fa;
+@@ -798,7 +830,7 @@
+           bordo = '1px solid hsl(40 30% 90% / .12)';
+         }
+         celle.push({
+-          id, x, y, w: Math.max(24, CELLW - 12), sfondo, bordo, testoColore, ombra, et,
++          id, x, y, w: Math.max(24, CELLW - 12), wt: CELLW, sfondo, bordo, testoColore, ombra, et,
+           aria: 'corda ' + CORDE[s] + ' tasto ' + f,
+           cursore: tap ? 'pointer' : 'default', eventi: tap ? 'auto' : 'none',
+           onTap: tap || (()=>{})
+@@ -837,7 +869,7 @@
+       tastierino.push({
+         et: String(n),
+         onTap: () => this.rispondiNumero(n),
+-        stile: 'flex:1;min-width:0;height:44px;border-radius:11px;font-family:inherit;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums;cursor:' + (risolto ? 'default' : 'pointer')
++        stile: 'flex:1;min-width:0;height:46px;border-radius:11px;font-family:inherit;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums;cursor:' + (risolto ? 'default' : 'pointer')
+           + ';border:1px solid ' + (giusta ? 'hsl(140 55% 70%)' : 'hsl(40 30% 90% / .2)')
+           + ';background:' + (giusta ? 'hsl(140 48% 48%)' : 'hsl(204 45% 15%)')
+           + ';color:' + (giusta ? '#fff' : 'hsl(40 30% 92%)') + ';opacity:' + (risolto && !giusta ? '.45' : '1')
+@@ -937,7 +969,7 @@
+         return {
+           et: s,
+           onTap: () => this.rispondiNome(pc),
+-          stile: 'flex:1;min-width:0;height:44px;border-radius:11px;font-family:inherit;font-weight:800;font-size:14px;cursor:' + (risolto ? 'default' : 'pointer')
++          stile: 'flex:1;min-width:0;height:46px;border-radius:11px;font-family:inherit;font-weight:800;font-size:15px;cursor:' + (risolto ? 'default' : 'pointer')
+             + ';border:1px solid ' + (giusta ? 'hsl(140 55% 70%)' : 'hsl(40 30% 90% / .2)')
+             + ';background:' + (giusta ? 'hsl(140 48% 48%)' : 'hsl(204 45% 15%)')
+             + ';color:' + (giusta ? '#fff' : 'hsl(40 30% 92%)') + ';opacity:' + (risolto && !giusta ? '.45' : '1')
+@@ -945,11 +977,11 @@
+       }),
+       mostraFatto: !!carta && modo === 'stessa',
+       tFatto: T.fatto(st.sel.length), fatto: this.fatto,
+-      stileFatto: 'width:100%;min-height:44px;border:none;border-radius:12px;font-family:inherit;font-weight:800;font-size:15px;cursor:' + (risolto ? 'default' : 'pointer') + ';background:' + (risolto ? 'hsl(204 45% 18%)' : CORAL) + ';color:#fff',
++      stileFatto: 'width:100%;min-height:46px;border:none;border-radius:12px;font-family:inherit;font-weight:800;font-size:15px;cursor:' + (risolto ? 'default' : 'pointer') + ';background:' + (risolto ? 'hsl(204 45% 18%)' : CORAL) + ';color:#fff',
        tastierino,
        stileManico: 'position:relative;width:' + larghManico + 'px;height:' + ALTM + 'px;animation:' + (st.scossa ? 'sltShake .4s ease' : 'none'),
        manicoX: XT, cordeX: PADL, corde, etichette, tasti, numeri, segni, celle, onde: st.onde,

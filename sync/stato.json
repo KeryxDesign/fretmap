@@ -13,10 +13,10 @@
       "patch": "sync/riparazioni-mobile.patch",
       "design_sha256": "ad329248b576d6c63d5d1b8f79774527ec8c4126725873a7bfcc3155b0c02cbc",
       "design_byte": 59521,
-      "repo_sha256": "831333acabcd03aac217f755d7a88785004ad9ae6b79b1b8c888b982970b8e75",
-      "repo_byte": 60982,
+      "repo_sha256": "9e3c8053a9695a30808641e32eee7c534f30aae99e452502b5fba2cc17b67c61",
+      "repo_byte": 61383,
       "design_etag": "1789017029220336",
-      "prova": "letto dal progetto con read_file il 2026-09-10, decodificato, 59521 byte su 59521 attesi, 979 righe su 979. La patch aggiunge title, manifest e meta per il telefono, lo schermo intero con blocco orizzontale alla partenza, e lo sblocco dell'audio al primo tocco."
+      "prova": "letto dal progetto con read_file il 2026-09-10, decodificato, 59521 byte su 59521 attesi, 979 righe su 979. La patch aggiunge title, manifest e meta per il telefono, lo schermo intero con blocco orizzontale alla partenza, lo sblocco dell'audio al primo tocco, e le misure di tocco decise da LORI il 2026-09-10 (caselle del manico 30 -> 38 con bersaglio 40 a colonna piena, freccia indietro 28 -> 32 con bersaglio 46, fila di risposta 44 -> 46, testa ridotta da 84 a 79 per farci stare il manico da 255)."
     },
     {
       "repo": "support.js",

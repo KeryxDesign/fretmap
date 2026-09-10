@@ -21,6 +21,7 @@ Il motore sceglie da solo il gioco e la coppia di corde: tiene una mappa di quan
 - Si tiene **in orizzontale**. In verticale la partita mostra un avviso: il manico ha bisogno di tutta la larghezza.
 - Alla partenza chiede lo schermo intero e blocca l'orientamento, dove il browser lo permette.
 - Il gioco «Orecchio» usa l'audio del browser: il primo tocco sblocca il suono.
+- I bersagli da dito sono almeno 38 px reali sul manico e 44 px sulla fila di risposta e sulla freccia indietro. Sul manico non c'è spazio morto: ogni tocco cade sulla casella più vicina.
 
 ## Dati
 
