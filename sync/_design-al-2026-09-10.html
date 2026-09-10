@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/keryx-design-system-1e4ff7df-396a-4879-bdfb-75be3456348c/styles.css">
+<script src="_ds/keryx-design-system-1e4ff7df-396a-4879-bdfb-75be3456348c/_ds_bundle.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+html,body{margin:0;height:100%;background:hsl(204 96% 6%);overscroll-behavior:none;-webkit-text-size-adjust:100%}
+button{touch-action:manipulation}
+a{color:hsl(6 63% 62%)}a:hover{color:hsl(6 63% 52%)}
+@keyframes sltPulse{0%{transform:translate(-50%,-50%) scale(.7);opacity:0}40%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.9);opacity:0}}
+@keyframes sltShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes sltRise{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+
+<div style="{{ stilePagina }}">
+
+  <sc-if value="{{ cromo }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;align-items:baseline;gap:14px;color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+    <span style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:26px;letter-spacing:.02em">SALTI</span>
+    <span style="font-size:14px;color:hsl(40 30% 90% / .55)">Contare i semitoni fra le corde</span>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ verticale }}">
+  <div style="position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;text-align:center;background:hsl(204 96% 10%);color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+    <div style="font-size:40px;line-height:1">⟳</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:26px">{{ tRuota }}</div>
+    <div style="font-size:14px;line-height:1.5;color:hsl(40 30% 90% / .68);max-width:26ch">{{ tRuotaSub }}</div>
+  </div>
+  </sc-if>
+
+  <div style="{{ stileTelaio }}">
+    <sc-if value="{{ cromo }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:180px;height:4px;border-radius:2px;background:hsl(40 30% 90% / .35)"></div>
+    </sc-if>
+    <div style="{{ stileSchermo }}">
+
+      <sc-if value="{{ aIntro }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Intro" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:0 46px;background:hsl(204 96% 10%);color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:hsl(6 63% 64%)">SALTI</div>
+          <div style="flex:1"></div>
+          <div style="display:flex;gap:3px;padding:2px;border-radius:8px;background:hsl(40 30% 90% / .08)">
+            <sc-for list="{{ lingue }}" as="l" hint-placeholder-count="2">
+              <button type="button" onClick="{{ l.onTap }}" style="{{ l.stile }}">{{ l.et }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <h1 style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:34px;line-height:1.08;letter-spacing:-.02em;margin:0;text-wrap:pretty">{{ tIntroT }}</h1>
+          <p style="margin:10px 0 0;font-size:14px;line-height:1.55;color:hsl(40 30% 90% / .8);max-width:62ch;text-wrap:pretty">{{ tIntroD }}</p>
+        </div>
+        <div style="display:flex;gap:10px">
+          <sc-for list="{{ livelli }}" as="v" hint-placeholder-count="3">
+            <button type="button" onClick="{{ v.onTap }}" style="{{ v.stile }}">
+              <span style="font-weight:700;font-size:14px;line-height:1.2;color:hsl(40 30% 92%)">{{ v.t }}</span>
+              <span style="font-size:11px;line-height:1.35;color:hsl(40 30% 90% / .62)">{{ v.d }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="font-size:11px;line-height:1.45;color:hsl(40 30% 90% / .5);text-wrap:pretty">{{ tIntroNota }}</div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ inGioco }}">
+      <div data-screen-label="Gioco" style="position:absolute;inset:0;display:flex;flex-direction:column;background:hsl(204 96% 8%);color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+        <div style="box-sizing:border-box;flex:none;display:flex;flex-direction:column;gap:7px;padding:11px 30px 9px;border-bottom:1px solid hsl(40 30% 90% / .1)">
+          <div style="display:flex;align-items:center;gap:11px">
+            <button type="button" onClick="{{ esci }}" aria-label="{{ tChiudi }}" style="width:28px;height:28px;flex:none;border-radius:9px;border:1px solid hsl(40 30% 90% / .2);background:transparent;color:hsl(40 30% 90%);font-size:14px;line-height:1;cursor:pointer;font-family:inherit">←</button>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:{{ coloreFase }}">{{ tEtichetta }}</div>
+            <div style="flex:1"></div>
+            <div style="display:flex;gap:4px;width:150px;flex:none">
+              <sc-for list="{{ pips }}" as="p" hint-placeholder-count="10">
+                <div style="flex:1;height:4px;border-radius:2px;background:{{ p.colore }}"></div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;letter-spacing:.08em;white-space:nowrap;color:hsl(40 30% 90% / .6)">{{ contatore }}</div>
+            <div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:42px;text-align:right;color:{{ coloreTimer }}">{{ etTimer }}</div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <div style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:23px;line-height:1.2;letter-spacing:-.01em;white-space:nowrap">{{ domanda }}</div>
+            <div style="flex:1;min-width:0;font-size:12px;line-height:1.35;color:{{ coloreSotto }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sottoDomanda }}</div>
+          </div>
+        </div>
+
+        <sc-if value="{{ mostraManico }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:0 16px">
+          <div style="{{ stileManico }}">
+            <div style="position:absolute;left:{{ manicoX }}px;right:0;top:8px;bottom:24px;border-radius:6px;background:linear-gradient(180deg,hsl(24 32% 12%),hsl(24 36% 8%));box-shadow:inset 0 2px 6px rgba(0,0,0,.5)"></div>
+            <sc-for list="{{ tasti }}" as="t" hint-placeholder-count="14">
+              <div style="position:absolute;left:{{ t.x }}px;top:8px;bottom:24px;width:{{ t.w }}px;background:{{ t.colore }};border-radius:1px"></div>
+            </sc-for>
+            <sc-for list="{{ segni }}" as="m" hint-placeholder-count="5">
+              <div style="position:absolute;left:{{ m.x }}px;top:{{ m.y }}px;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:hsl(42 87% 55% / .45)"></div>
+            </sc-for>
+            <sc-for list="{{ corde }}" as="c" hint-placeholder-count="6">
+              <div style="position:absolute;left:{{ cordeX }}px;right:0;top:{{ c.y }}px;height:{{ c.h }}px;background:{{ c.colore }};transform:translateY(-50%)"></div>
+            </sc-for>
+            <sc-for list="{{ etichette }}" as="e" hint-placeholder-count="6">
+              <div style="position:absolute;left:0;top:{{ e.y }}px;transform:translateY(-50%);width:24px;text-align:right;font-size:11px;font-weight:800;color:{{ e.colore }}">{{ e.t }}</div>
+            </sc-for>
+            <sc-for list="{{ celle }}" as="k" hint-placeholder-count="78">
+              <button type="button" onClick="{{ k.onTap }}" aria-label="{{ k.aria }}" style="position:absolute;left:{{ k.x }}px;top:{{ k.y }}px;transform:translate(-50%,-50%);width:{{ k.w }}px;height:30px;border-radius:15px;border:{{ k.bordo }};background:{{ k.sfondo }};color:{{ k.testoColore }};font-family:inherit;font-weight:800;font-size:11px;letter-spacing:.02em;cursor:{{ k.cursore }};padding:0;box-shadow:{{ k.ombra }};pointer-events:{{ k.eventi }}">{{ k.et }}</button>
+            </sc-for>
+            <sc-for list="{{ onde }}" as="o" hint-placeholder-count="0">
+              <div style="position:absolute;left:{{ o.x }}px;top:{{ o.y }}px;width:64px;height:34px;border-radius:17px;border:2px solid {{ o.colore }};animation:sltPulse .6s ease-out forwards;pointer-events:none"></div>
+            </sc-for>
+            <sc-for list="{{ numeri }}" as="n" hint-placeholder-count="13">
+              <div style="position:absolute;left:{{ n.x }}px;bottom:0;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.05em;color:{{ n.colore }}">{{ n.t }}</div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ mostraAscolto }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:0;padding:0 46px">
+          <div style="font-size:13px;line-height:1.5;text-align:center;max-width:44ch;text-wrap:pretty;color:hsl(40 30% 90% / .7)">{{ tAscoltoNota }}</div>
+          <button type="button" onClick="{{ riascolta }}" style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:14px;border:1px solid hsl(199 70% 58% / .5);background:transparent;color:hsl(199 85% 82%);font-family:inherit;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:hsl(199 55% 34% / .3)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+            {{ tRiascolta }}
+          </button>
+        </div>
+        </sc-if>
+
+        <div style="box-sizing:border-box;flex:none;padding:0 30px 12px">
+          <sc-if value="{{ mostraTastierino }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:5px">
+            <sc-for list="{{ tastierino }}" as="k" hint-placeholder-count="13">
+              <button type="button" onClick="{{ k.onTap }}" style="{{ k.stile }}">{{ k.et }}</button>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ mostraSillabe }}">
+          <div style="display:flex;gap:5px">
+            <sc-for list="{{ sillabe }}" as="k" hint-placeholder-count="12">
+              <button type="button" onClick="{{ k.onTap }}" style="{{ k.stile }}">{{ k.et }}</button>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ mostraFatto }}">
+          <button type="button" onClick="{{ fatto }}" style="{{ stileFatto }}">{{ tFatto }}</button>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ aMappa }}">
+      <div data-screen-label="Mappa" style="{{ layoutMappa }}">
+        <div style="{{ layoutPannello }}">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:hsl(6 63% 64%)">SALTI</div>
+            <div style="flex:1"></div>
+            <div style="display:flex;gap:3px;padding:2px;border-radius:8px;background:hsl(40 30% 90% / .08)">
+              <sc-for list="{{ lingue }}" as="l" hint-placeholder-count="2">
+                <button type="button" onClick="{{ l.onTap }}" style="{{ l.stile }}">{{ l.et }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+            <div style="box-sizing:border-box;padding:12px 14px;border-radius:13px;background:hsl(204 96% 6%);border:1px solid hsl(42 87% 55% / .3)">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:800;line-height:1.2;color:hsl(42 87% 55%)">{{ puntiTot }}</div>
+              <div style="font-size:10px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:hsl(40 30% 90% / .68);margin-top:4px">{{ tPunti }}</div>
+            </div>
+            <div style="box-sizing:border-box;padding:12px 14px;border-radius:13px;background:hsl(204 96% 6%);border:1px solid hsl(40 30% 90% / .1)">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:800;line-height:1.2;color:hsl(199 89% 62%)">{{ tempoMedio }}</div>
+              <div style="font-size:10px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:hsl(40 30% 90% / .68);margin-top:4px">{{ tTempoMedio }}</div>
+            </div>
+          </div>
+
+          <div style="box-sizing:border-box;padding:13px 15px;border-radius:13px;background:hsl(204 96% 6%);border:1px solid hsl(199 70% 55% / .3)">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:hsl(199 85% 78%)">{{ tProssimo }}</div>
+            <div style="font-size:13px;line-height:1.45;color:hsl(40 30% 92%);margin-top:5px;text-wrap:pretty">{{ prossimoTesto }}</div>
+          </div>
+
+          <button type="button" onClick="{{ inizia }}" style="width:100%;min-height:58px;margin-top:auto;border:none;border-radius:16px;background:hsl(6 63% 55%);color:#fff;font-family:inherit;font-weight:700;font-size:18px;cursor:pointer;box-shadow:0 10px 24px hsl(6 63% 55% / .32)" style-hover="background:hsl(6 63% 48%)">{{ tInizia }}</button>
+        </div>
+
+        <div style="{{ layoutDestra }}">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:hsl(40 30% 90% / .62);margin-bottom:8px">{{ tGiochi }}</div>
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ modi }}" as="p" hint-placeholder-count="4">
+                <button type="button" onClick="{{ p.onTap }}" style="{{ p.stile }}" title="{{ p.nome }}">
+                  <span style="font-family:'Playfair Display',Georgia,serif;font-size:14px;font-weight:800;line-height:1.1;text-align:center;color:{{ p.coloreT }}">{{ p.et }}</span>
+                  <span style="font-size:9px;font-weight:700;line-height:1.2;text-align:center;color:{{ p.coloreN }}">{{ p.nome }}</span>
+                  <div style="width:100%;height:5px;border-radius:3px;background:hsl(40 30% 90% / .12);overflow:hidden">
+                    <div style="height:100%;width:{{ p.pct }}%;background:{{ p.barra }};border-radius:3px"></div>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;flex:1;min-height:0">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:hsl(40 30% 90% / .62)">{{ tCalore }}</span>
+              <span style="font-size:11px;white-space:nowrap;color:hsl(40 30% 90% / .5)">{{ tLegenda }}</span>
+            </div>
+            <div style="{{ stileGriglia }}">
+              <sc-for list="{{ grigliaCelle }}" as="h" hint-placeholder-count="49">
+                <div style="{{ h.stile }}">{{ h.et }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ aEsito }}">
+      <div data-screen-label="Esito" style="position:absolute;inset:0;display:flex;align-items:center;gap:34px;padding:14px 46px;overflow:auto;background:hsl(204 96% 10%);color:hsl(40 30% 90%);font-family:'DM Sans',system-ui,sans-serif">
+        <div style="flex:1;min-width:0;min-height:0;animation:{{ animEsito }}">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:hsl(42 87% 55%)">{{ tEsitoOcchiello }}</div>
+          <h1 style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:32px;line-height:1.08;letter-spacing:-.02em;margin:9px 0 0;text-wrap:pretty">{{ tEsitoT }}</h1>
+          <p style="margin:10px 0 0;font-size:14px;line-height:1.55;color:hsl(40 30% 90% / .8);max-width:40ch;text-wrap:pretty">{{ tEsitoD }}</p>
+          <div style="display:flex;gap:10px;margin-top:18px">
+            <button type="button" onClick="{{ inizia }}" style="min-height:48px;padding:0 24px;border:none;border-radius:13px;background:hsl(6 63% 55%);color:#fff;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:hsl(6 63% 48%)">{{ tAncora }}</button>
+            <button type="button" onClick="{{ vaiMappa }}" style="min-height:48px;padding:0 20px;border-radius:13px;border:1px solid hsl(40 30% 90% / .22);background:transparent;color:hsl(40 30% 90%);font-family:inherit;font-weight:700;font-size:15px;cursor:pointer">{{ tChiudi }}</button>
+          </div>
+        </div>
+        <div style="width:300px;flex:none;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px">
+            <div style="box-sizing:border-box;flex:1;padding:14px 16px;border-radius:14px;background:hsl(204 96% 6%);border:1px solid hsl(42 87% 55% / .35)">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:800;line-height:1.2;color:hsl(42 87% 55%)">+{{ puntiGiro }}</div>
+              <div style="font-size:10px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:hsl(40 30% 90% / .68);margin-top:4px">{{ tPunti }}</div>
+            </div>
+            <div style="box-sizing:border-box;flex:1;padding:14px 16px;border-radius:14px;background:hsl(204 96% 6%);border:1px solid hsl(40 30% 90% / .1)">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:800;line-height:1.2">{{ esitoGiuste }}<span style="font-size:17px;opacity:.45">/{{ nCarte }}</span></div>
+              <div style="font-size:10px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:hsl(40 30% 90% / .68);margin-top:4px">{{ tGiuste }}</div>
+            </div>
+          </div>
+          <div style="box-sizing:border-box;padding:13px 16px;border-radius:14px;background:hsl(204 96% 6%);border:1px solid hsl(40 30% 90% / .1)">
+            <div style="font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:hsl(40 30% 90% / .6);margin-bottom:9px">{{ tGiochi }}</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <sc-for list="{{ esitoModi }}" as="e" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <span style="width:76px;flex:none;font-size:11px;font-weight:700;white-space:nowrap;color:{{ e.coloreT }}">{{ e.et }}</span>
+                  <div style="flex:1;height:5px;border-radius:3px;background:hsl(40 30% 90% / .12);overflow:hidden">
+                    <div style="height:100%;width:{{ e.pct }}%;background:{{ e.barra }};border-radius:3px"></div>
+                  </div>
+                  <span style="width:58px;flex:none;text-align:right;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;color:hsl(40 30% 90% / .7)">{{ e.dett }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+
+    </div>
+  </div>
+
+  <sc-if value="{{ cromo }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:868px;font-size:13px;line-height:1.6;color:hsl(40 30% 90% / .5);text-align:center;text-wrap:pretty;font-family:'DM Sans',system-ui,sans-serif">{{ tPie }}</div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:620}}">
+const APERTE = [40,45,50,55,59,64];
+// solfeggio cromatico, una sillaba per semitono: niente diesis da leggere al volo
+const NOMI = ['Do','Di','Re','Me','Mi','Fa','Fi','Sol','Le','La','Te','Ti'];
+const CORDE = ['E','A','D','G','B','e'];
+const CORDE_L = ['MI basso','LA','RE','SOL','SI','MI cantino'];
+const CORDE_L_EN = ['low E','A','D','G','B','high E'];
+const ORO = 'hsl(42 87% 55%)', SKY = 'hsl(199 89% 55%)', CORAL = 'hsl(6 63% 55%)', VERDE = 'hsl(140 45% 55%)';
+const CHIAVE = 'salti.v1';
+const NF = 12;
+const MODI = ['distanza','arrivo','nome','stessa','orecchio'];
+// la precisione sblocca, la velocità decide il livello
+const SOGLIA = {distanza:4000, arrivo:5000, nome:5000, stessa:12000, orecchio:5000};
+// tutte le trenta coppie ordinate da → a
+const COPPIE = (()=>{ const o=[]; for(let a=0;a<6;a++) for(let b=0;b<6;b++) if(a!==b) o.push([a,b]); return o; })();
+
+
+const L = {
+  it: {
+    ruota:'Gira il telefono', ruotaSub:'Il manico ha bisogno di tutta la larghezza: tienilo in orizzontale, come una chitarra.',
+    introT:'Contare i semitoni fra le corde.',
+    introD:'Sulla stessa corda è banale: un tasto, un semitono. Il salto è farlo fra corde diverse — una quarta ogni volta, tranne SOL→SI che è una terza. Chi lo interiorizza non cerca più «il DO»: cerca «+3 da qui», e arriva ovunque.',
+    introNota:'Si parte dalle corde vicine: i salti larghi si aprono da soli quando i piccoli reggono. La tua risposta sposta solo il punto di partenza.',
+    liv:[
+      {t:'Non so contare', d:'Fra corde diverse mi perdo'},
+      {t:'Me la cavo, lento', d:'Ci arrivo, ma ci penso'},
+      {t:'Sono veloce', d:'Voglio solo tenere il tempo'}
+    ],
+    modi:{distanza:'Distanza', arrivo:'Arrivo', nome:'Nome', stessa:'Stessa nota', orecchio:'Orecchio'},
+    modiSub:{distanza:'vedi → conti', arrivo:'conti → tocchi', nome:'conti → nomini', stessa:'una → tutte', orecchio:'senti → conti'},
+    fasi:{esercizio:'Esercizio', giusto:'Giusto', sbagliato:'Guarda dov’era'},
+    domDist:'Quanti semitoni?', domArr:(v,n,c)=>(v ? 'Sali' : 'Scendi') + ' di ' + n + (n === 1 ? ' semitono' : ' semitoni') + ' sulla corda ' + c,
+    domStessa:n=>'Trova tutti gli altri ' + n, domOrecchio:'Quanti semitoni?',
+    domNome:n=>'Da ' + n + ': che nota è l’oro?',
+    subNome:'Conta il salto, poi di’ come si chiama.',
+    noNome:(s,x)=>'Era ' + s + ' · ' + x + ' semitoni',
+    subDist:v=>'Dall’azzurro all’oro, ' + (v ? 'salendo' : 'scendendo') + '.',
+    subArr:'Tocca il tasto d’arrivo sulla corda accesa.',
+    subStessa:(n,a,b)=>(n === 1 ? 'Ce n’è una sola' : 'Ce ne sono ' + n) + ' fra il ' + a + '° e il ' + b + '° tasto. Poi premi Fatto.',
+    subOrecchio:v=>'La seconda è più ' + (v ? 'alta' : 'bassa') + '.',
+    subOk:'Preso. Avanti.',
+    noDist:(d,x,y)=>(d === 1 ? 'Era 1 semitono: ' : 'Erano ' + d + ': ') + x + ' → ' + y,
+    noArr:(f,n)=>'Era il tasto ' + f + ' · ' + n,
+    noStessa:(n,m,t)=>(n === 1 ? 'Era una sola' : 'Erano ' + n) + (m ? (m === 1 ? ' · ne mancava una' : ' · ne mancavano ' + m) : '') + (t ? (t === 1 ? ' · una sbagliata' : ' · ' + t + ' sbagliate') : ''),
+    ascolto:'Il manico è nascosto. Ascolta le due note e conta la distanza.', riascolta:'Riascolta',
+    fatto:n=>'Fatto · ' + n + ' scelte',
+    punti:'Punti', tempoMedio:'Tempo medio', giuste:'Risposte giuste',
+    prossimo:'Il motore ha scelto', inizia:'Inizia · 10 esercizi', ancora:'Ancora dieci', chiudi:'Chiudi',
+    calore:'Mappa da → a', legenda:'chiaro = da fare · verde = rapido · velato = ancora chiuso', giochi:n=>'I ' + n + ' giochi',
+    esitoOcchiello:['Sessione perfetta','Terreno guadagnato','Colpo assorbito'],
+    esitoT:[['Dieci su dieci. Il manico si è aperto.','Nessun errore: le distanze sono tue.'],['Le dita cominciano a saperlo.','Il conto si sta accorciando.'],['Contare va bene, per ora.','Ogni errore è una distanza che da adesso conosci.']],
+    esitoD:(t,d)=>(t ? 'Media di ' + t + ' per risposta. ' : '') + d,
+    esitoProg:(m,c)=>'Il motore ora insiste su ' + m + ', ' + c + ': è il punto più lento.',
+    prossimoT:(m,c,x)=>m + ' · ' + c + ' — ' + x,
+    motivi:{freddo:'non l’hai ancora toccata', lento:'la sai, ma ci pensi troppo', quasi:'ci sei quasi, serve velocità', nuovo:'partiamo da qui'},
+    pie:'Dieci esercizi a sessione. Il tempo si vede mentre giochi: la precisione sblocca la cella, la velocità la accende.'
+  },
+  en: {
+    ruota:'Turn your phone', ruotaSub:'The neck needs the full width — hold it sideways, like a guitar.',
+    introT:'Counting semitones between strings.',
+    introD:'On one string it’s trivial: one fret, one semitone. The jump is doing it across strings — a fourth every time, except G→B which is a third. Whoever internalises this stops looking for “the C”: they look for “+3 from here”, and get anywhere.',
+    introNota:'We start with neighbouring strings: the wide jumps open up on their own once the small ones hold. Your answer only moves the starting point.',
+    liv:[
+      {t:'I can’t count', d:'Across strings I get lost'},
+      {t:'I manage, slowly', d:'I get there, but I think'},
+      {t:'I’m fast', d:'I just want to keep the pace'}
+    ],
+    modi:{distanza:'Distance', arrivo:'Arrival', nome:'Name', stessa:'Same note', orecchio:'Ear'},
+    modiSub:{distanza:'see → count', arrivo:'count → tap', nome:'count → name', stessa:'one → all', orecchio:'hear → count'},
+    fasi:{esercizio:'Exercise', giusto:'Correct', sbagliato:'See where it was'},
+    domDist:'How many semitones?', domArr:(v,n,c)=>(v ? 'Go up' : 'Go down') + ' ' + n + (n === 1 ? ' semitone' : ' semitones') + ' on the ' + c + ' string',
+    domStessa:n=>'Find every other ' + n, domOrecchio:'How many semitones?',
+    domNome:n=>'From ' + n + ': what is the gold one?',
+    subNome:'Count the jump, then name what you land on.',
+    noNome:(s,x)=>'It was ' + s + ' · ' + x + ' semitones',
+    subDist:v=>'From blue to gold, ' + (v ? 'going up' : 'going down') + '.',
+    subArr:'Tap the arrival fret on the lit string.',
+    subStessa:(n,a,b)=>(n === 1 ? 'There is just one' : 'There are ' + n) + ' between frets ' + a + ' and ' + b + '. Then press Done.',
+    subOrecchio:v=>'The second one is ' + (v ? 'higher' : 'lower') + '.',
+    subOk:'Locked. Next.',
+    noDist:(d,x,y)=>'It was ' + d + ': ' + x + ' → ' + y,
+    noArr:(f,n)=>'It was fret ' + f + ' · ' + n,
+    noStessa:(n,m,t)=>(n === 1 ? 'There was one' : 'There were ' + n) + (m ? ' · ' + m + ' missing' : '') + (t ? ' · ' + t + ' wrong' : ''),
+    ascolto:'The neck is hidden. Listen to the two notes and count the distance.', riascolta:'Play again',
+    fatto:n=>'Done · ' + n + ' picked',
+    punti:'Points', tempoMedio:'Average time', giuste:'Correct answers',
+    prossimo:'The engine picked', inizia:'Start · 10 exercises', ancora:'Ten more', chiudi:'Close',
+    calore:'Map from → to', legenda:'light = to do · green = fast · faded = still locked', giochi:n=>'The ' + n + ' games',
+    esitoOcchiello:['Perfect session','Ground gained','Blow absorbed'],
+    esitoT:[['Ten for ten. The neck opened up.','Not one miss: the distances are yours.'],['Your fingers are starting to know it.','The counting is getting shorter.'],['Counting is fine, for now.','Every mistake is a distance you know from now on.']],
+    esitoD:(t,d)=>(t ? 'Averaging ' + t + ' per answer. ' : '') + d,
+    esitoProg:(m,c)=>'The engine will now push on ' + m + ', ' + c + ': that’s the slowest spot.',
+    prossimoT:(m,c,x)=>m + ' · ' + c + ' — ' + x,
+    motivi:{freddo:'you haven’t touched it yet', lento:'you know it, but you think too long', quasi:'nearly there, needs speed', nuovo:'we start here'},
+    pie:'Ten exercises a session. The clock is visible while you play: accuracy unlocks the cell, speed lights it up.'
+  }
+};
+
+const rnd = n => Math.floor(Math.random() * n);
+const pescaPeso = (lista, pesi) => {
+  let tot = 0; for(let i=0;i<pesi.length;i++) tot += pesi[i];
+  let x = Math.random() * tot;
+  for(let i=0;i<lista.length;i++){ x -= pesi[i]; if(x <= 0) return lista[i]; }
+  return lista[lista.length - 1];
+};
+
+class Component extends DCLogic {
+  state = {
+    schermo:'intro', lingua:'en', autoLiv:null,
+    mappa:{}, punti:0, sessioni:0, tempoStorico:[], modoSel:'distanza',
+    carte:[], indice:0, fase:'attesa', errore:null, rivela:false, sel:[],
+    giuste:0, puntiGiro:0, tempiGiro:[], onde:[], scossa:false, ora:0
+  };
+  timers = [];
+
+  componentDidMount(){
+    const tocco = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    this.misura = () => {
+      const vv = window.visualViewport;
+      this.setState({vw: Math.round(vv ? vv.width : window.innerWidth), vh: Math.round(vv ? vv.height : window.innerHeight), tocco});
+    };
+    this.misura();
+    window.addEventListener('resize', this.misura);
+    window.addEventListener('orientationchange', this.misura);
+    if(window.visualViewport) window.visualViewport.addEventListener('resize', this.misura);
+    try {
+      const s = JSON.parse(localStorage.getItem(CHIAVE) || 'null');
+      if(s) this.setState(Object.assign({}, s, {schermo: s.autoLiv == null ? 'intro' : 'mappa', carte:[], fase:'attesa', sel:[]}));
+    } catch(e){}
+    this.tick = setInterval(()=>{
+      if(this.state.schermo === 'gioco' && this.state.fase === 'chiede') this.setState({ora: Date.now()});
+    }, 200);
+  }
+  componentWillUnmount(){
+    this.timers.forEach(clearTimeout);
+    clearInterval(this.tick);
+    window.removeEventListener('resize', this.misura);
+    window.removeEventListener('orientationchange', this.misura);
+    if(window.visualViewport) window.visualViewport.removeEventListener('resize', this.misura);
+  }
+  pulisci(){ this.timers.forEach(clearTimeout); this.timers = []; }
+  dopo(ms, fn){ this.timers.push(setTimeout(fn, ms)); }
+
+  salva = () => {
+    try {
+      const s = this.state;
+      localStorage.setItem(CHIAVE, JSON.stringify({
+        lingua:s.lingua, autoLiv:s.autoLiv, mappa:s.mappa, punti:s.punti,
+        sessioni:s.sessioni, tempoStorico:s.tempoStorico, modoSel:s.modoSel
+      }));
+    } catch(e){}
+  };
+
+  suona(midi, tipo, ritardo){
+    try{
+      if(!this.ac) this.ac = new (window.AudioContext||window.webkitAudioContext)();
+      const ac = this.ac;
+      if(ac.state === 'suspended') ac.resume();
+      const t = ac.currentTime + (ritardo || 0);
+      if(tipo === 'no'){
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(70, t+.3);
+        g.gain.setValueAtTime(.14, t); g.gain.exponentialRampToValueAtTime(.001, t+.35);
+        o.connect(g).connect(ac.destination); o.start(t); o.stop(t+.36); return;
+      }
+      const f = 440*Math.pow(2,(midi-69)/12);
+      [1,2,3,4].forEach((h,i)=>{
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = i===0 ? 'triangle' : 'sine'; o.frequency.value = f*h;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime([.2,.06,.03,.015][i], t+.008);
+        g.gain.exponentialRampToValueAtTime(.001, t+1.05);
+        o.connect(g).connect(ac.destination); o.start(t); o.stop(t+1.1);
+      });
+    }catch(e){}
+  }
+
+  get nCarte(){ return 10; }
+  nota(m){ return NOMI[((m % 12) + 12) % 12]; }
+  nomeCorda(i){ return (this.state.lingua === 'en' ? CORDE_L_EN : CORDE_L)[i]; }
+
+  // ——— mappa di competenza: una cella per (modalità, corda da, corda a) ———
+  cel(modo, a, b){ return this.state.mappa[modo + '|' + a + '|' + b] || {n:0, ok:0, t:0}; }
+  livello(modo, a, b){
+    const c = this.cel(modo, a, b);
+    if(c.n < 3 || !c.ok) return 0;
+    if(c.ok / c.n < 0.75) return 0;
+    return (c.t / c.ok) <= SOGLIA[modo] ? 2 : 1;
+  }
+  // debolezza = poco testata + imprecisa + lenta
+  peso(modo, a, b){
+    const c = this.cel(modo, a, b);
+    const acc = c.n ? c.ok / c.n : 0;
+    const medio = c.ok ? c.t / c.ok : null;
+    const nuova = 2.2 / (1 + c.n);
+    const impreciso = c.n ? (1 - acc) * 1.8 : 0.6;
+    const lento = medio == null ? 0.5 : Math.max(0, Math.min(1.2, (medio - SOGLIA[modo] * 0.6) / SOGLIA[modo]));
+    return 0.25 + nuova + impreciso + lento;
+  }
+  pctModo(modo){
+    let s = 0;
+    COPPIE.forEach(([a,b])=>{ s += this.livello(modo, a, b); });
+    return Math.round((s / (COPPIE.length * 2)) * 100);
+  }
+  registra(modo, coppie, ok, ms){
+    this.setState(s=>{
+      const mappa = Object.assign({}, s.mappa);
+      coppie.forEach(([a,b])=>{
+        const k = modo + '|' + a + '|' + b;
+        const c = mappa[k] ? Object.assign({}, mappa[k]) : {n:0, ok:0, t:0};
+        c.n += 1;
+        if(ok){ c.ok += 1; c.t += ms; }
+        mappa[k] = c;
+      });
+      return {mappa};
+    });
+  }
+
+  scegliModo(){
+    // l'autodichiarazione sposta solo i pesi di partenza
+    const base = [
+      {distanza:5, arrivo:3, nome:2.4, stessa:1.2, orecchio:0.8},
+      {distanza:3, arrivo:3, nome:3, stessa:2, orecchio:1.6},
+      {distanza:2, arrivo:2.6, nome:3.2, stessa:2.2, orecchio:2.6}
+    ][this.state.autoLiv == null ? 1 : this.state.autoLiv];
+    const pesi = MODI.map(m=>{
+      let s = 0; COPPIE.forEach(([a,b])=>{ s += this.peso(m, a, b); });
+      return base[m] * (s / COPPIE.length);
+    });
+    return pescaPeso(MODI, pesi);
+  }
+  // il salto massimo cresce solo quando tutti i salti già aperti sono almeno precisi:
+  // così non ti trovi mai un MI grave → MI cantino prima di sapere MI → LA
+  maxSalto(modo){
+    for(let d = 1; d < 5; d++){
+      const pronte = COPPIE.filter(([a,b])=>Math.abs(a - b) <= d)
+        .every(([a,b])=>this.livello(modo, a, b) >= 1);
+      if(!pronte) return d;
+    }
+    return 5;
+  }
+  // due corde adiacenti possono comunque distare dieci semitoni: anche l'ampiezza
+  // dell'intervallo va aperta per gradi, o il primo esercizio è già ingestibile
+  maxIntervallo(modo){
+    const d = this.maxSalto(modo);
+    return d === 1 ? 7 : d === 2 ? 9 : 12;
+  }
+  // e la larghezza della mano: all'inizio i due tasti stanno entro 5, come una posizione
+  // reale sul manico. Poi la finestra si allarga insieme al resto.
+  maxLarghezza(modo){
+    const d = this.maxSalto(modo);
+    return d === 1 ? 5 : d === 2 ? 7 : d === 3 ? 9 : 13;
+  }
+  scegliCoppia(modo){
+    const d = this.maxSalto(modo);
+    const aperte = COPPIE.filter(([a,b])=>Math.abs(a - b) <= d);
+    // il salto appena aperto pesa di più: è la novità della sessione
+    return pescaPeso(aperte, aperte.map(([a,b])=>this.peso(modo, a, b) * (Math.abs(a - b) === d ? 1.6 : 1)));
+  }
+
+  // ——— i generatori enumerano le combinazioni valide: niente tasto fuori da 0–12 ———
+  creaCarta(){
+    const modo = this.scegliModo();
+    const par = this.scegliCoppia(modo);
+    const a = par[0], b = par[1];
+    const MAXI = this.maxIntervallo(modo), MAXW = this.maxLarghezza(modo);
+
+    if(modo === 'distanza' || modo === 'orecchio'){
+      const ok = [];
+      for(let fa=0; fa<=NF; fa++) for(let fb=0; fb<=NF; fb++){
+        const d = (APERTE[b] + fb) - (APERTE[a] + fa);
+        if(d !== 0 && Math.abs(d) <= MAXI && Math.abs(fb - fa) < MAXW) ok.push([fa, fb]);
+      }
+      const p = ok[rnd(ok.length)];
+      const da = APERTE[a] + p[0], al = APERTE[b] + p[1];
+      return {modo, a, b, fa:p[0], fb:p[1], risposta: Math.abs(al - da), su: al > da, midi:da, midi2:al, coppie:[[a,b]]};
+    }
+
+    if(modo === 'nome'){
+      const ok = [];
+      for(let fa=0; fa<=NF; fa++) for(let fb=0; fb<=NF; fb++){
+        const d = (APERTE[b] + fb) - (APERTE[a] + fa);
+        if(d !== 0 && Math.abs(d) <= MAXI && Math.abs(fb - fa) < MAXW) ok.push([fa, fb]);
+      }
+      const p = ok[rnd(ok.length)];
+      const al = APERTE[b] + p[1];
+      return {modo, a, b, fa:p[0], fb:p[1], risposta: ((al % 12) + 12) % 12, midi:APERTE[a]+p[0], midi2:al, coppie:[[a,b]]};
+    }
+
+    if(modo === 'arrivo'){
+      const su = Math.random() < 0.7;
+      const tutte = [];
+      for(let fa=0; fa<=NF; fa++) for(let fb=0; fb<=NF; fb++){
+        const d = (APERTE[b] + fb) - (APERTE[a] + fa);
+        if(d !== 0 && Math.abs(d) <= MAXI && Math.abs(fb - fa) < MAXW) tutte.push([fa, fb, d]);
+      }
+      const dir = tutte.filter(x=>(x[2] > 0) === su);
+      const p = (dir.length ? dir : tutte)[rnd((dir.length ? dir : tutte).length)];
+      return {modo, a, b, fa:p[0], fb:p[1], n:Math.abs(p[2]), su:p[2] > 0, risposta:p[1], midi:APERTE[a]+p[0], midi2:APERTE[b]+p[1], coppie:[[a,b]]};
+    }
+
+    // stessa nota: la conta annunciata si deriva dalle posizioni reali
+    const fa = rnd(NF + 1);
+    const pc = (APERTE[a] + fa) % 12;
+    const bersagli = [];
+    // una finestra vera di MAXW tasti che contiene la nota data — non un raggio da essa,
+    // che lascerebbe i bersagli sparsi su 2·MAXW−1 tasti
+    const w0 = Math.max(0, Math.min(NF + 1 - MAXW, fa - rnd(MAXW)));
+    const w1 = w0 + MAXW - 1;
+    for(let s=0; s<6; s++) for(let f=w0; f<=w1; f++){
+      if((APERTE[s] + f) % 12 !== pc) continue;
+      if(s === a && f === fa) continue;
+      bersagli.push(s + '-' + f);
+    }
+    if(!bersagli.length) return this.creaCarta();
+    const tuttiF = [fa].concat(bersagli.map(k=>+k.split('-')[1]));
+    const corde = {}; bersagli.forEach(k=>{ corde[+k.split('-')[0]] = 1; });
+    const coppie = Object.keys(corde).map(Number).filter(s=>s !== a).map(s=>[a, s]);
+    return {modo, a, fa, pc, bersagli, midi:APERTE[a]+fa, w0, w1, coppie: coppie.length ? coppie : [[a, (a+1) % 6]]};
+  }
+
+  nuovoGiro = () => {
+    this.pulisci();
+    const carte = [];
+    for(let i=0;i<this.nCarte;i++) carte.push(this.creaCarta());
+    this.setState({schermo:'gioco', carte, indice:0, giuste:0, puntiGiro:0, tempiGiro:[], onde:[], errore:null, rivela:false, sel:[], fase:'chiede', deltaGiro:{}}, ()=>this.apri(0));
+  };
+
+  apri(i){
+    this.avvio = Date.now();
+    const c = this.state.carte[i];
+    if(!c) return;
+    this.setState({ora: Date.now()});
+    if(c.modo === 'orecchio') this.dopo(300, ()=>this.suonaCoppia());
+    else this.suona(c.midi);
+  }
+  avviaCarta(i){
+    this.setState({indice:i, fase:'chiede', errore:null, rivela:false, sel:[], onde:[]}, ()=>this.apri(i));
+  }
+  suonaCoppia = () => {
+    const c = this.state.carte[this.state.indice];
+    if(!c || c.modo !== 'orecchio') return;
+    this.suona(c.midi, null, 0);
+    this.suona(c.midi2, null, 1.0);
+  };
+
+  onda(x,y,colore){
+    const id = Math.random();
+    this.setState(s=>({onde:[...s.onde, {id,x,y,colore}]}));
+    this.dopo(620, ()=>this.setState(s=>({onde:s.onde.filter(o=>o.id!==id)})));
+  }
+
+  valuta(ok){
+    const st = this.state, carta = st.carte[st.indice];
+    if(!carta || st.fase !== 'chiede') return;
+    const ms = Date.now() - this.avvio;
+    const sotto = ok && ms <= SOGLIA[carta.modo];
+    const guadagno = ok ? (sotto ? 20 : 10) : 0;
+    this.registra(carta.modo, carta.coppie, ok, ms);
+    const delta = Object.assign({}, st.deltaGiro || {});
+    delta[carta.modo] = (delta[carta.modo] || 0) + (ok ? 1 : 0);
+    if(ok){
+      this.setState(p=>({
+        fase:'ok', giuste:p.giuste + 1, puntiGiro:p.puntiGiro + guadagno,
+        tempiGiro:[...p.tempiGiro, ms], rivela:true, deltaGiro:delta
+      }));
+      this.dopo(1000, ()=>this.prossima());
+    } else {
+      this.suona(0, 'no');
+      this.setState({fase:'no', rivela:true, scossa:true, deltaGiro:delta});
+      this.dopo(420, ()=>this.setState({scossa:false}));
+      this.dopo(2400, ()=>this.prossima());
+    }
+  }
+
+  prossima(){
+    const i = this.state.indice + 1;
+    if(i >= this.state.carte.length){ this.chiudiGiro(); return; }
+    this.avviaCarta(i);
+  }
+
+  chiudiGiro(){
+    const s = this.state;
+    const media = s.tempiGiro.length ? s.tempiGiro.reduce((a,b)=>a+b,0) / s.tempiGiro.length : 0;
+    this.setState({
+      schermo:'esito', fase:'attesa',
+      punti: s.punti + s.puntiGiro,
+      sessioni: s.sessioni + 1,
+      tempoStorico: s.tempoStorico.concat([Math.round(media)]).slice(-20),
+      mediaGiro: Math.round(media)
+    }, this.salva);
+  }
+
+  rispondiNumero(n){
+    const c = this.state.carte[this.state.indice];
+    if(!c) return;
+    this.valuta(n === c.risposta);
+  }
+  rispondiNome(pc){
+    const c = this.state.carte[this.state.indice];
+    if(!c || c.modo !== 'nome') return;
+    if(pc === c.risposta) this.suona(c.midi2);
+    this.valuta(pc === c.risposta);
+  }
+
+  tap(s, f, x, y){
+    const st = this.state, carta = st.carte[st.indice];
+    if(!carta || st.fase !== 'chiede') return;
+    if(carta.modo === 'arrivo'){
+      if(s !== carta.b) return;
+      this.suona(APERTE[s] + f);
+      this.onda(x, y, f === carta.fb ? VERDE : CORAL);
+      if(f !== carta.fb) this.setState({errore: s + '-' + f});
+      this.valuta(f === carta.fb);
+      return;
+    }
+    if(carta.modo === 'stessa'){
+      if(s === carta.a && f === carta.fa) return;
+      const k = s + '-' + f;
+      this.suona(APERTE[s] + f);
+      this.setState(p=>({sel: p.sel.indexOf(k) < 0 ? p.sel.concat([k]) : p.sel.filter(y=>y !== k)}));
+    }
+  }
+
+  fatto = () => {
+    const st = this.state, c = st.carte[st.indice];
+    if(!c || c.modo !== 'stessa' || st.fase !== 'chiede') return;
+    const ok = st.sel.length === c.bersagli.length && c.bersagli.every(k=>st.sel.indexOf(k) >= 0);
+    this.valuta(ok);
+  };
+
+  renderVals(){
+    const st = this.state;
+    const T = L[st.lingua] || L.en;
+    const vw = st.vw || 1200, vh = st.vh || 800;
+    const compatto = st.tocco || vw < 1000;
+    const ritr = compatto && vh > vw;
+    const verticale = ritr && (st.schermo === 'gioco');
+    const baseW = ritr ? 390 : 844, baseH = ritr ? 844 : 390;
+    const k = compatto ? Math.min(vw / baseW, vh / baseH) : 1;
+    const sw = compatto ? Math.max(baseW, Math.round(vw / k)) : 844;
+    const sh = compatto ? Math.max(baseH, Math.round(vh / k)) : 390;
+    const stilePagina = compatto
+      ? 'position:fixed;inset:0;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:hsl(204 96% 6%);padding:0;-webkit-user-select:none;user-select:none'
+      : 'min-height:100vh;padding:56px 40px 72px;display:flex;flex-direction:column;align-items:center;gap:22px;background:hsl(204 96% 6%)';
+    const stileTelaio = compatto
+      ? 'width:' + Math.round(sw*k) + 'px;height:' + Math.round(sh*k) + 'px;position:relative;padding:0;border-radius:0;background:transparent;box-shadow:none'
+      : 'width:868px;height:414px;background:#08090c;border-radius:58px;padding:12px;position:relative;box-shadow:0 50px 100px rgba(0,0,0,.6),0 0 0 2px hsl(40 30% 90% / .08)';
+    const stileSchermo = 'width:' + sw + 'px;height:' + sh + 'px;border-radius:' + (compatto ? '0' : '46px') + ';overflow:hidden;position:relative;background:hsl(204 96% 8%);transform:scale(' + k + ');transform-origin:top left';
+
+    const PB = sw < 800 ? 22 : 46, PI = sw < 800 ? 16 : 30;
+    const wPan = Math.round(Math.min(330, sw * 0.42));
+    const layoutMappa = 'position:absolute;inset:0;display:flex;flex-direction:' + (ritr ? 'column' : 'row') + ';overflow:auto;background:hsl(204 96% 10%);color:hsl(40 30% 90%);font-family:\'DM Sans\',system-ui,sans-serif';
+    const layoutPannello = ritr
+      ? 'box-sizing:border-box;width:100%;flex:none;padding:22px ' + PB + 'px;display:flex;flex-direction:column;gap:14px;border-bottom:1px solid hsl(40 30% 90% / .1)'
+      : 'box-sizing:border-box;width:' + wPan + 'px;flex:none;min-width:0;padding:20px ' + PI + 'px 18px ' + PB + 'px;display:flex;flex-direction:column;gap:12px;border-right:1px solid hsl(40 30% 90% / .1)';
+    const layoutDestra = ritr
+      ? 'box-sizing:border-box;flex:1;padding:20px ' + PB + 'px 24px;display:flex;flex-direction:column;gap:16px'
+      : 'box-sizing:border-box;flex:1;min-width:0;min-height:0;padding:16px ' + PB + 'px 16px ' + PI + 'px;display:flex;flex-direction:column;gap:11px';
+
+    // ——— manico: sempre 0–12, nessuna finestra scorrevole ———
+    const carta = st.carte[st.indice];
+    const modo = carta ? carta.modo : 'distanza';
+    const risolto = st.fase === 'ok' || st.fase === 'no';
+    const PADL = 30, TOP = 6, SP = 33, ALTM = 232;
+    // la finestra visibile segue quella degli esercizi: un manico da 13 tasti per una
+    // domanda che ne usa 5 costringe a cercare, e non è quello che si sta allenando
+    const larg = carta ? this.maxLarghezza(modo) : 13;
+    let da, fine;
+    if(carta && carta.modo === 'stessa'){ da = carta.w0; fine = carta.w1; }
+    else {
+      const usati = carta ? [carta.fa, carta.fb] : [0];
+      const lo = Math.min.apply(null, usati), hi = Math.max.apply(null, usati);
+      da = Math.max(0, Math.min(lo, NF + 1 - larg));
+      fine = Math.min(NF, Math.max(hi, da + larg - 1));
+      da = Math.max(0, Math.min(da, fine - larg + 1));
+    }
+    const NVIS = fine - da + 1;
+    const vuote = da === 0;              // la colonna 0 sta fuori dalla tastiera
+    const NTAST = NVIS - (vuote ? 1 : 0); // caselle vere fra i tasti
+    const CELLW = Math.max(40, Math.min(96, Math.floor((sw - 32 - PADL) / NVIS)));
+    const XT = PADL + (vuote ? CELLW : 0); // dove comincia il legno
+    const larghManico = XT + CELLW * NTAST;
+    const corde = [], etichette = [], tasti = [], numeri = [], segni = [], celle = [];
+    for(let i=0;i<6;i++){
+      const y = TOP + 22 + (5-i)*SP;
+      const attiva = carta && (i === carta.a || i === carta.b);
+      corde.push({y, h: 1 + (5-i)*.3, colore: 'hsl(40 30% 90% / ' + (0.5 + (5-i)*0.06) + ')'});
+      etichette.push({y, t: CORDE[i], colore: attiva ? 'hsl(40 30% 94%)' : 'hsl(40 30% 90% / .4)'});
+    }
+    for(let j=0;j<=NTAST;j++){ const capo = vuote && j === 0; tasti.push({x: XT + j*CELLW, w: capo ? 7 : 3, colore: capo ? 'hsl(40 30% 92%)' : 'hsl(40 20% 70% / .4)'}); }
+    const xDi = f => (vuote && f === 0) ? PADL + CELLW/2 : XT + (f - da - (vuote ? 1 : 0))*CELLW + CELLW/2;
+    for(let f=da; f<=fine; f++){
+      const marker = [3,5,7,9,12].indexOf(f) >= 0;
+      const x = xDi(f);
+      numeri.push({x, t: (vuote && f === 0) ? '○' : String(f), colore: marker ? ORO : 'hsl(40 30% 90% / .5)'});
+      if(marker) segni.push({x, y: TOP + 22 + 5*SP + 20});
+    }
+    if(carta && (modo !== 'orecchio' || risolto)){
+      for(let s=0;s<6;s++) for(let f=da;f<=fine;f++){
+        const id = s + '-' + f;
+        const x = xDi(f), y = TOP + 22 + (5-s)*SP;
+        let sfondo = 'transparent', bordo = '1px solid transparent', testoColore = 'transparent', ombra = 'none', et = '', tap = null;
+        if(modo === 'stessa'){
+          const dato = s === carta.a && f === carta.fa;
+          const scelto = st.sel.indexOf(id) >= 0;
+          const bers = carta.bersagli.indexOf(id) >= 0;
+          if(dato){ sfondo = SKY; bordo = '2px solid #fff'; testoColore = 'hsl(204 96% 8%)'; et = this.nota(carta.midi); ombra = '0 0 20px hsl(199 89% 50% / .5)'; }
+          else if(risolto && bers && !scelto){ bordo = '2px dashed hsl(140 55% 78%)'; testoColore = 'hsl(140 55% 78%)'; et = '?'; }
+          else if(risolto && scelto && !bers){ sfondo = CORAL; bordo = '1px solid ' + CORAL; testoColore = '#fff'; et = '×'; }
+          else if(scelto){ sfondo = 'hsl(140 48% 46%)'; bordo = '2px solid #fff'; testoColore = '#fff'; et = '●'; }
+          else if(!risolto){ sfondo = 'hsl(204 45% 15%)'; bordo = '1px solid hsl(40 30% 90% / .16)'; }
+          if(!risolto && !dato) tap = () => this.tap(s, f, x - 32, y - 17);
+        } else {
+          const dato = s === carta.a && f === carta.fa;
+          const risp = s === carta.b && f === carta.fb;
+          if(dato){ sfondo = SKY; bordo = '2px solid #fff'; testoColore = 'transparent'; et = ''; ombra = '0 0 22px hsl(199 89% 50% / .55)'; }
+          else if(st.errore === id){ sfondo = CORAL; bordo = '1px solid ' + CORAL; testoColore = '#fff'; et = '×'; }
+          else if(risp && (modo !== 'arrivo' || risolto)){
+            sfondo = risolto && st.fase === 'no' ? 'hsl(140 45% 44%)' : ORO;
+            bordo = '2px solid #fff'; testoColore = 'transparent'; et = '';
+            ombra = '0 0 22px hsl(42 87% 55% / .5)';
+          }
+          else if(modo === 'arrivo' && s === carta.b && !risolto){ sfondo = 'hsl(204 45% 17%)'; bordo = '1px solid hsl(42 87% 55% / .35)'; }
+          if(modo === 'arrivo' && s === carta.b && !risolto && !dato) tap = () => this.tap(s, f, x - 32, y - 17);
+        }
+        if(vuote && f === 0 && sfondo === 'transparent' && bordo.indexOf('transparent') >= 0){
+          bordo = '1px solid hsl(40 30% 90% / .12)';
+        }
+        celle.push({
+          id, x, y, w: Math.max(24, CELLW - 12), sfondo, bordo, testoColore, ombra, et,
+          aria: 'corda ' + CORDE[s] + ' tasto ' + f,
+          cursore: tap ? 'pointer' : 'default', eventi: tap ? 'auto' : 'none',
+          onTap: tap || (()=>{})
+        });
+      }
+    }
+
+    // ——— domanda ———
+    let domanda = '—', sotto = '';
+    if(carta){
+      if(modo === 'distanza'){ domanda = T.domDist; sotto = T.subDist(carta.su); }
+      else if(modo === 'arrivo'){ domanda = T.domArr(carta.su, carta.n, this.nomeCorda(carta.b)); sotto = T.subArr; }
+      else if(modo === 'nome'){ domanda = T.domNome(this.nota(carta.midi)); sotto = T.subNome; }
+      else if(modo === 'stessa'){ domanda = T.domStessa(this.nota(carta.midi)); sotto = T.subStessa(carta.bersagli.length, da, fine); }
+      else { domanda = T.domOrecchio; sotto = T.subOrecchio(carta.su); }
+      if(st.fase === 'ok') sotto = T.subOk;
+      else if(st.fase === 'no'){
+        if(modo === 'distanza' || modo === 'orecchio') sotto = T.noDist(carta.risposta, this.nota(carta.midi), this.nota(carta.midi2));
+        else if(modo === 'nome') sotto = T.noNome(this.nota(carta.midi2), Math.abs(carta.midi2 - carta.midi));
+        else if(modo === 'arrivo') sotto = T.noArr(carta.fb, this.nota(carta.midi2));
+        else {
+          const manca = carta.bersagli.filter(x=>st.sel.indexOf(x) < 0).length;
+          const troppe = st.sel.filter(x=>carta.bersagli.indexOf(x) < 0).length;
+          sotto = T.noStessa(carta.bersagli.length, manca, troppe);
+        }
+      }
+    }
+    const coloriFase = {chiede:'hsl(40 30% 92%)', ok:VERDE, no:CORAL, attesa:'hsl(40 30% 92%)'};
+    const nomeFase = st.fase === 'ok' ? T.fasi.giusto : st.fase === 'no' ? T.fasi.sbagliato : T.modi[modo];
+    const trasc = risolto || !carta ? 0 : Math.max(0, st.ora - this.avvio) / 1000;
+    const sogliaS = SOGLIA[modo] / 1000;
+
+    const tastierino = [];
+    for(let n=0;n<=12;n++){
+      const giusta = risolto && carta && n === carta.risposta;
+      tastierino.push({
+        et: String(n),
+        onTap: () => this.rispondiNumero(n),
+        stile: 'flex:1;min-width:0;height:44px;border-radius:11px;font-family:inherit;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums;cursor:' + (risolto ? 'default' : 'pointer')
+          + ';border:1px solid ' + (giusta ? 'hsl(140 55% 70%)' : 'hsl(40 30% 90% / .2)')
+          + ';background:' + (giusta ? 'hsl(140 48% 48%)' : 'hsl(204 45% 15%)')
+          + ';color:' + (giusta ? '#fff' : 'hsl(40 30% 92%)') + ';opacity:' + (risolto && !giusta ? '.45' : '1')
+      });
+    }
+
+    // ——— mappa da → a ———
+    const wGri = Math.round(Math.min(sw - PB - PI - 8, 430));
+    const cw = Math.floor((wGri - 20) / 6);
+    // sette righe devono coprire lo spazio che resta sotto la fila dei giochi,
+    // altrimenti il pannello destro resta vuoto per un terzo
+    const base = 'box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;min-height:0;height:100%;';
+    const grigliaCelle = [{et:'', stile: base}];
+    for(let b=0;b<6;b++) grigliaCelle.push({et:CORDE[b], stile: base + 'color:hsl(40 30% 90% / .5)'});
+    for(let a=0;a<6;a++){
+      grigliaCelle.push({et:CORDE[a], stile: base + 'color:hsl(40 30% 90% / .5)'});
+      for(let b=0;b<6;b++){
+        if(a === b){ grigliaCelle.push({et:'', stile: base}); continue; }
+        const l = this.livello(st.modoSel, a, b);
+        const chiusa = Math.abs(a - b) > this.maxSalto(st.modoSel);
+        grigliaCelle.push({et:'', stile: base + 'width:100%;border-radius:3px;background:'
+          + (l === 2 ? VERDE : l === 1 ? 'hsl(42 87% 55% / .6)' : chiusa ? 'hsl(40 30% 90% / .03)' : 'hsl(40 30% 90% / .12)')
+          + (chiusa && l === 0 ? ';border:1px dashed hsl(40 30% 90% / .09)' : '')});
+      }
+    }
+
+    const tuttiTempi = st.tempoStorico || [];
+    const tempoMedio = tuttiTempi.length ? (tuttiTempi.slice(-5).reduce((a,b)=>a+b,0) / Math.min(5, tuttiTempi.length) / 1000).toFixed(1) + 's' : '—';
+
+    const modi = MODI.map(m=>{
+      const p = this.pctModo(m), on = st.modoSel === m;
+      return {
+        et: T.modi[m], nome: T.modiSub[m], pct: p,
+        stile: 'box-sizing:border-box;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 5px 8px;border-radius:12px;cursor:pointer;font-family:inherit;border:1px solid ' + (on ? 'hsl(42 87% 55% / .55)' : 'hsl(40 30% 90% / .14)') + ';background:' + (on ? 'hsl(42 87% 55% / .12)' : 'transparent'),
+        coloreT: p >= 90 ? VERDE : on ? 'hsl(40 30% 94%)' : 'hsl(40 30% 90% / .55)',
+        coloreN: on ? 'hsl(42 88% 70%)' : 'hsl(40 30% 90% / .34)',
+        barra: p >= 90 ? VERDE : p >= 55 ? ORO : SKY,
+        onTap: () => this.setState({modoSel: m}, this.salva)
+      };
+    });
+
+    // il motore spiega la scelta: la cella più debole del gioco più debole
+    let peggiore = {m:'distanza', a:0, b:1, w:-1};
+    MODI.forEach(m=>{
+      const d = this.maxSalto(m);
+      COPPIE.filter(([a,b])=>Math.abs(a - b) <= d).forEach(([a,b])=>{
+        const w = this.peso(m, a, b);
+        if(w > peggiore.w) peggiore = {m, a, b, w};
+      });
+    });
+    const cDeb = this.cel(peggiore.m, peggiore.a, peggiore.b);
+    const motivo = cDeb.n === 0 ? T.motivi.nuovo
+      : cDeb.ok / cDeb.n < 0.5 ? T.motivi.freddo
+      : cDeb.ok / cDeb.n < 0.75 ? T.motivi.lento : T.motivi.quasi;
+    const etCoppia = CORDE[peggiore.a] + ' → ' + CORDE[peggiore.b];
+
+
+    const fascia = st.giuste === this.nCarte ? 0 : st.giuste >= this.nCarte * 0.6 ? 1 : 2;
+    // senza risposte giuste non c'è nessuna media: dichiarare 0.0s sarebbe una statistica falsa
+    const etMedia = st.mediaGiro ? (st.mediaGiro / 1000).toFixed(1) + 's' : null;
+    const esitoD = T.esitoD(etMedia, T.esitoProg(T.modi[peggiore.m], etCoppia));
+
+
+    return {
+      cromo: !compatto, verticale, stilePagina, stileTelaio, stileSchermo,
+      layoutMappa, layoutPannello, layoutDestra,
+      aIntro: st.schermo === 'intro', inGioco: st.schermo === 'gioco',
+      aMappa: st.schermo === 'mappa', aEsito: st.schermo === 'esito',
+      tRuota:T.ruota, tRuotaSub:T.ruotaSub, tPie:T.pie,
+      tIntroT:T.introT, tIntroD:T.introD, tIntroNota:T.introNota,
+      lingue: [{id:'it',et:'IT'},{id:'en',et:'EN'}].map(x=>({
+        et:x.et,
+        stile: 'padding:3px 9px;border-radius:6px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:10px;letter-spacing:.06em;background:' + (st.lingua === x.id ? 'hsl(40 30% 90% / .9)' : 'transparent') + ';color:' + (st.lingua === x.id ? 'hsl(204 96% 10%)' : 'hsl(40 30% 90% / .55)'),
+        onTap: () => this.setState({lingua:x.id}, this.salva)
+      })),
+      livelli: T.liv.map((v,i)=>({
+        t:v.t, d:v.d,
+        stile: 'box-sizing:border-box;flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;align-items:flex-start;padding:13px 14px;border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;border:1px solid ' + (st.autoLiv === i ? 'hsl(6 63% 58%)' : 'hsl(40 30% 90% / .16)') + ';background:' + (st.autoLiv === i ? 'hsl(6 63% 55% / .14)' : 'hsl(204 96% 6%)'),
+        onTap: () => this.setState({autoLiv:i}, ()=>{ this.salva(); this.nuovoGiro(); })
+      })),
+      pips: (st.carte.length ? st.carte : new Array(this.nCarte).fill(0)).map((c,i)=>({
+        colore: i < st.indice ? VERDE : i === st.indice ? ORO : 'hsl(40 30% 90% / .16)'
+      })),
+      contatore: (st.indice + 1) + '/' + this.nCarte,
+      etTimer: trasc.toFixed(1) + 's',
+      coloreTimer: trasc > sogliaS ? CORAL : 'hsl(40 30% 90% / .55)',
+      tEtichetta: nomeFase, coloreFase: coloriFase[st.fase] || 'hsl(40 30% 92%)',
+      domanda, sottoDomanda: sotto,
+      coloreSotto: st.fase === 'no' ? 'hsl(6 63% 72%)' : st.fase === 'ok' ? 'hsl(140 55% 74%)' : 'hsl(40 30% 90% / .7)',
+      mostraManico: !!carta && (modo !== 'orecchio' || risolto),
+      mostraAscolto: !!carta && modo === 'orecchio' && !risolto,
+      tAscoltoNota: T.ascolto, tRiascolta: T.riascolta, riascolta: this.suonaCoppia,
+      mostraTastierino: !!carta && (modo === 'distanza' || modo === 'orecchio'),
+      mostraSillabe: !!carta && modo === 'nome',
+      sillabe: NOMI.map((s, pc)=>{
+        const giusta = risolto && carta && pc === carta.risposta;
+        return {
+          et: s,
+          onTap: () => this.rispondiNome(pc),
+          stile: 'flex:1;min-width:0;height:44px;border-radius:11px;font-family:inherit;font-weight:800;font-size:14px;cursor:' + (risolto ? 'default' : 'pointer')
+            + ';border:1px solid ' + (giusta ? 'hsl(140 55% 70%)' : 'hsl(40 30% 90% / .2)')
+            + ';background:' + (giusta ? 'hsl(140 48% 48%)' : 'hsl(204 45% 15%)')
+            + ';color:' + (giusta ? '#fff' : 'hsl(40 30% 92%)') + ';opacity:' + (risolto && !giusta ? '.45' : '1')
+        };
+      }),
+      mostraFatto: !!carta && modo === 'stessa',
+      tFatto: T.fatto(st.sel.length), fatto: this.fatto,
+      stileFatto: 'width:100%;min-height:44px;border:none;border-radius:12px;font-family:inherit;font-weight:800;font-size:15px;cursor:' + (risolto ? 'default' : 'pointer') + ';background:' + (risolto ? 'hsl(204 45% 18%)' : CORAL) + ';color:#fff',
+      tastierino,
+      stileManico: 'position:relative;width:' + larghManico + 'px;height:' + ALTM + 'px;animation:' + (st.scossa ? 'sltShake .4s ease' : 'none'),
+      manicoX: XT, cordeX: PADL, corde, etichette, tasti, numeri, segni, celle, onde: st.onde,
+      esci: () => { this.pulisci(); this.setState({schermo:'mappa', fase:'attesa'}, this.salva); },
+      inizia: this.nuovoGiro,
+      vaiMappa: () => this.setState({schermo:'mappa'}),
+      puntiTot: st.punti, tPunti:T.punti, tempoMedio, tTempoMedio:T.tempoMedio, tGiuste:T.giuste,
+      tProssimo:T.prossimo, prossimoTesto: T.prossimoT(T.modi[peggiore.m], etCoppia, motivo),
+      tInizia:T.inizia, tCalore:T.calore, tLegenda:T.legenda, tGiochi:T.giochi(MODI.length),
+      stileGriglia: 'display:grid;grid-template-columns:20px repeat(6,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr));gap:2px;flex:1;min-height:0;max-width:' + (wGri + 20) + 'px;box-sizing:border-box;padding:8px 9px;border-radius:11px;background:hsl(204 96% 6%);border:1px solid hsl(40 30% 90% / .1)',
+      grigliaCelle, modi,
+      nCarte: this.nCarte, esitoGiuste: st.giuste, puntiGiro: st.puntiGiro,
+      tEsitoOcchiello: T.esitoOcchiello[fascia], tEsitoT: T.esitoT[fascia][(st.sessioni || 0) % 2], tEsitoD: esitoD,
+      tAncora:T.ancora, tChiudi:T.chiudi, animEsito: 'sltRise .5s ease-out both',
+      esitoModi: MODI.map(m=>{
+        const fatte = (st.carte || []).filter(c=>c.modo === m).length;
+        const g = (st.deltaGiro || {})[m] || 0;
+        const p = this.pctModo(m);
+        return {
+          et: T.modi[m], pct: p, barra: p >= 90 ? VERDE : p >= 55 ? ORO : SKY,
+          coloreT: fatte ? 'hsl(40 30% 92%)' : 'hsl(40 30% 90% / .35)',
+          dett: fatte ? g + '/' + fatte : '—'
+        };
+      }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

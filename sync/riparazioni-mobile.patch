@@ -1,0 +1,61 @@
+--- sync/_design-al-2026-09-10.html	2026-09-10 07:23:20
++++ index.html	2026-09-10 07:27:37
+@@ -3,6 +3,13 @@
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
++<title>FretMap</title>
++<link rel="manifest" href="./manifest.webmanifest">
++<meta name="theme-color" content="#031a2b">
++<meta name="mobile-web-app-capable" content="yes">
++<meta name="apple-mobile-web-app-capable" content="yes">
++<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
++<meta name="apple-mobile-web-app-title" content="FretMap">
+ <script src="./support.js"></script>
+ </head>
+ <body>
+@@ -587,10 +594,35 @@
+     const corde = {}; bersagli.forEach(k=>{ corde[+k.split('-')[0]] = 1; });
+     const coppie = Object.keys(corde).map(Number).filter(s=>s !== a).map(s=>[a, s]);
+     return {modo, a, fa, pc, bersagli, midi:APERTE[a]+fa, w0, w1, coppie: coppie.length ? coppie : [[a, (a+1) % 6]]};
++  }
++
++  schermoIntero(entra){
++    try{
++      if(entra){
++        const el = document.documentElement;
++        const req = el.requestFullscreen || el.webkitRequestFullscreen;
++        const blocca = () => { try{ if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(()=>{}); }catch(e){} };
++        if(req && !document.fullscreenElement){ const r = req.call(el, {navigationUI:'hide'}); if(r && r.then) r.then(blocca, blocca); else blocca(); }
++        else blocca();
++      } else {
++        if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
++        const esci = document.exitFullscreen || document.webkitExitFullscreen;
++        if(esci && document.fullscreenElement){ const r = esci.call(document); if(r && r.catch) r.catch(()=>{}); }
++      }
++    }catch(e){}
++  }
++
++  sbloccaAudio(){
++    try{
++      if(!this.ac) this.ac = new (window.AudioContext||window.webkitAudioContext)();
++      if(this.ac.state === 'suspended') this.ac.resume();
++    }catch(e){}
+   }
+ 
+   nuovoGiro = () => {
+     this.pulisci();
++    this.schermoIntero(true);
++    this.sbloccaAudio();
+     const carte = [];
+     for(let i=0;i<this.nCarte;i++) carte.push(this.creaCarta());
+     this.setState({schermo:'gioco', carte, indice:0, giuste:0, puntiGiro:0, tempiGiro:[], onde:[], errore:null, rivela:false, sel:[], fase:'chiede', deltaGiro:{}}, ()=>this.apri(0));
+@@ -949,7 +981,7 @@
+       tastierino,
+       stileManico: 'position:relative;width:' + larghManico + 'px;height:' + ALTM + 'px;animation:' + (st.scossa ? 'sltShake .4s ease' : 'none'),
+       manicoX: XT, cordeX: PADL, corde, etichette, tasti, numeri, segni, celle, onde: st.onde,
+-      esci: () => { this.pulisci(); this.setState({schermo:'mappa', fase:'attesa'}, this.salva); },
++      esci: () => { this.pulisci(); this.schermoIntero(false); this.setState({schermo:'mappa', fase:'attesa'}, this.salva); },
+       inizia: this.nuovoGiro,
+       vaiMappa: () => this.setState({schermo:'mappa'}),
+       puntiTot: st.punti, tPunti:T.punti, tempoMedio, tTempoMedio:T.tempoMedio, tGiuste:T.giuste,

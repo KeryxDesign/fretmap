@@ -1,0 +1,12 @@
+{
+  "name": "FretMap",
+  "short_name": "FretMap",
+  "description": "Cinque giochi per orientarsi sul manico della chitarra: distanza, arrivo, nome, stessa nota, orecchio.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#031a2b",
+  "theme_color": "#031a2b"
+}
